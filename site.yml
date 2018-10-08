@@ -1,0 +1,22 @@
+---
+- name: Run commands
+  hosts: test
+  remote_user: serpichev
+  become: yes
+  become_user: root
+  tasks:
+  - name: Download file
+    yum: name=https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-6.4.1-x86_64.rpm
+    #state: present
+    #become: yes
+  - name: Install filebeat
+    command: "{{item}}"
+    with_items:
+    #- sudo rpm filebeat-6.4.1-x86_64.rpm
+    #- sudo rpm filebeat-6.4.1-x86_64.rp
+    #- sudo rpm --filebeat-6.4.1-x86_64.rpm
+    - sudo rm /etc/filebeat/filebeat.yml
+    - sudo cp /tmp/filebeat.yml /etc/filebeat/
+    - sudo service filebeat start
+    args:
+      warn: false
